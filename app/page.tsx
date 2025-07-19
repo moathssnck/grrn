@@ -1,113 +1,295 @@
-import Image from 'next/image';
+"use client"
 
-export default function Home() {
+import { useState } from "react"
+import { Menu, Search, ShoppingCart, Home, User, Heart, Grid3X3 } from "lucide-react"
+import { Button } from "@/components/ui/button"
+import { Card, CardContent } from "@/components/ui/card"
+import { Badge } from "@/components/ui/badge"
+import Image from "next/image"
+import { ProductsSection } from "@/components/products-section"
+import { CartDrawer } from "@/components/cart-drawer"
+import { PaymentModal } from "@/components/payment-modal"
+import SplashComponent from "@/components/splash"
+
+
+export interface Product {
+  id: string
+  name: string
+  price: number
+  image: string
+  category: string
+  description: string
+  unit: string
+  inStock: boolean
+}
+
+export interface CartItem extends Product {
+  quantity: number
+}
+
+export default function ZabehatyApp() {
+  const [currentView, setCurrentView] = useState<"home" | "products" | "cart" | "profile">("home")
+  const [cartItems, setCartItems] = useState<CartItem[]>([])
+  const [isCartOpen, setIsCartOpen] = useState(false)
+  const [isPaymentOpen, setIsPaymentOpen] = useState(false)
+
+  const addToCart = (product: Product) => {
+    setCartItems((prev) => {
+      const existingItem = prev.find((item) => item.id === product.id)
+      if (existingItem) {
+        return prev.map((item) => (item.id === product.id ? { ...item, quantity: item.quantity + 1 } : item))
+      }
+      return [...prev, { ...product, quantity: 1 }]
+    })
+  }
+
+  const updateCartQuantity = (productId: string, quantity: number) => {
+    if (quantity <= 0) {
+      setCartItems((prev) => prev.filter((item) => item.id !== productId))
+    } else {
+      setCartItems((prev) => prev.map((item) => (item.id === productId ? { ...item, quantity } : item)))
+    }
+  }
+
+  const getTotalItems = () => {
+    return cartItems.reduce((total, item) => total + item.quantity, 0)
+  }
+
+  const getTotalPrice = () => {
+    return cartItems.reduce((total, item) => total + item.price * item.quantity, 0)
+  }
+
+  const categories = [
+    {
+      title: "خضار طازجة مضمونة الجودة",
+      subtitle: "خضروات طازجة",
+      price: "10.77",
+      image: "/placeholder.svg?height=96&width=128",
+      badge: "عرض خاص",
+    },
+    {
+      title: "عروض تقليدية",
+      description: "منتجات تراثية أصيلة",
+      price: "12.50",
+      image: "/placeholder.svg?height=80&width=96",
+      badge: "جديد",
+    },
+    {
+      title: "عروض الألبان",
+      description: "منتجات الألبان الطازجة",
+      price: "8.75",
+      image: "/placeholder.svg?height=80&width=96",
+    },
+    {
+      title: "العصائر الطبيعية",
+      description: "عصائر طازجة ١٠٠٪ طبيعية",
+      price: "15.00",
+      image: "/placeholder.svg?height=80&width=96",
+    },
+    {
+      title: "عروض الأسماك",
+      description: "أسماك طازجة يومياً",
+      price: "22.30",
+      image: "/placeholder.svg?height=80&width=96",
+      badge: "BOX OFFER",
+    },
+  ]
+
+  if (currentView === "products") {
+    return <ProductsSection onAddToCart={addToCart} onBack={() => setCurrentView("home")} cartCount={getTotalItems()} />
+  }
+
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
-      <div className="z-10 max-w-5xl w-full items-center justify-between font-mono text-sm lg:flex">
-        <p className="fixed left-0 top-0 flex w-full justify-center border-b border-gray-300 bg-gradient-to-b from-zinc-200 pb-6 pt-8 backdrop-blur-2xl dark:border-neutral-800 dark:bg-zinc-800/30 dark:from-inherit lg:static lg:w-auto  lg:rounded-xl lg:border lg:bg-gray-200 lg:p-4 lg:dark:bg-zinc-800/30">
-          Get started by editing&nbsp;
-          <code className="font-mono font-bold">app/page.tsx</code>
-        </p>
-        <div className="fixed bottom-0 left-0 flex h-48 w-full items-end justify-center bg-gradient-to-t from-white via-white dark:from-black dark:via-black lg:static lg:h-auto lg:w-auto lg:bg-none">
-          <a
-            className="pointer-events-none flex place-items-center gap-2 p-8 lg:pointer-events-auto lg:p-0"
-            href="https://vercel.com?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            By{' '}
-            <Image
-              src="/vercel.svg"
-              alt="Vercel Logo"
-              className="dark:invert"
-              width={100}
-              height={24}
-              priority
-            />
-          </a>
+    <div className="min-h-screen bg-gray-50" dir="rtl">
+      {/* Header */}
+      <header className="bg-green-600 text-white p-4 sticky top-0 z-10">
+        <div className="flex items-center justify-between">
+          <Button variant="ghost" size="icon" className="text-white">
+            <Menu className="h-6 w-6" />
+          </Button>
+
+          <div className="flex items-center gap-2">
+            <div className="w-10 h-10 bg-white rounded-full flex items-center justify-center">
+<img src="/next.svg" alt="logo" width={65}/>          </div>
+         
+            </div>
+
+          <div className="flex items-center gap-2">
+            <Button variant="ghost" size="icon" className="text-white">
+              <Search className="h-5 w-5" />
+            </Button>
+            <Button variant="ghost" size="icon" className="text-white relative" onClick={() => setIsCartOpen(true)}>
+              <ShoppingCart className="h-5 w-5" />
+              {getTotalItems() > 0 && (
+                <Badge className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center p-0">
+                  {getTotalItems()}
+                </Badge>
+              )}
+            </Button>
+          </div>
         </div>
-      </div>
+      </header>
 
-      <div className="relative flex place-items-center before:absolute before:h-[300px] before:w-[480px] before:-translate-x-1/2 before:rounded-full before:bg-gradient-radial before:from-white before:to-transparent before:blur-2xl before:content-[''] after:absolute after:-z-20 after:h-[180px] after:w-[240px] after:translate-x-1/3 after:bg-gradient-conic after:from-sky-200 after:via-blue-200 after:blur-2xl after:content-[''] before:dark:bg-gradient-to-br before:dark:from-transparent before:dark:to-blue-700 before:dark:opacity-10 after:dark:from-sky-900 after:dark:via-[#0141ff] after:dark:opacity-40 before:lg:h-[360px] z-[-1]">
-        <Image
-          className="relative dark:drop-shadow-[0_0_0.3rem_#ffffff70] dark:invert"
-          src="/next.svg"
-          alt="Next.js Logo"
-          width={180}
-          height={37}
-          priority
-        />
-      </div>
+      {/* Main Content */}
+      <main className="pb-20">
+        {/* Featured Banner */}
+        <div className="p-4">
+          <Card className="relative overflow-hidden bg-gradient-to-r from-green-100 to-green-50">
+            <CardContent className="p-0">
+              <div className="flex items-center">
+                <div className="flex-1 p-4">
+                  <div className="bg-green-600 text-white px-2 py-1 rounded text-xs inline-block mb-2">عرض خاص</div>
+                  <h2 className="font-bold text-lg mb-1">خضار طازجة مضمونة الجودة</h2>
+                  <p className="text-gray-600 text-sm mb-2">خضروات طازجة</p>
+                  <div className="text-2xl font-bold text-green-600">
+                    10.77 <span className="text-sm">ر.ع</span>
+                  </div>
+                </div>
+                <div className="w-32 h-24">
+                  <Image
+                    src="/placeholder.svg?height=96&width=128"
+                    alt="خضار طازجة"
+                    width={128}
+                    height={96}
+                    className="w-full h-full object-cover rounded-l-lg"
+                  />
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
 
-      <div className="mb-32 grid text-center lg:max-w-5xl lg:w-full lg:mb-0 lg:grid-cols-4 lg:text-left">
-        <a
-          href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Docs{' '}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Find in-depth information about Next.js features and API.
-          </p>
-        </a>
+        {/* Categories Grid */}
+        <div className="px-4">
+          <h3 className="font-bold text-lg mb-4">الأقسام</h3>
+          <div className="grid grid-cols-3 gap-3 mb-6">
+            {[
+              { name: "لحوم طازجة", icon: "🥩" },
+              { name: "خضار وفواكه", icon: "🥬" },
+              { name: "منتجات الألبان", icon: "🥛" },
+            ].map((category) => (
+              <Card key={category.name} className="text-center cursor-pointer hover:shadow-md transition-shadow">
+                <CardContent className="p-3">
+                  <div className="text-2xl mb-2">{category.icon}</div>
+                  <p className="text-sm font-medium">{category.name}</p>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        </div>
 
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Learn{' '}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Learn about Next.js in an interactive course with&nbsp;quizzes!
-          </p>
-        </a>
+        {/* View All Products Button */}
+        <div className="px-4 mb-6">
+          <Button
+            onClick={() => setCurrentView("products")}
+            className="w-full bg-green-600 hover:bg-green-700 text-white"
+          >
+            عرض جميع المنتجات
+          </Button>
+        </div>
 
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Templates{' '}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Explore the Next.js 13 playground.
-          </p>
-        </a>
+        {/* Product Categories */}
+        <div className="space-y-4">
+          {categories.map((category, index) => (
+            <div key={index} className="px-4">
+              <Card className="overflow-hidden cursor-pointer hover:shadow-md transition-shadow">
+                <CardContent className="p-0">
+                  <div className="flex items-center">
+                    <div className="flex-1 p-4">
+                      {category.badge && (
+                        <div className="bg-red-500 text-white px-2 py-1 rounded text-xs inline-block mb-2">
+                          {category.badge}
+                        </div>
+                      )}
+                      <h3 className="font-bold text-base mb-1">{category.title}</h3>
+                      {category.description && <p className="text-gray-600 text-sm mb-2">{category.description}</p>}
+                      {category.price && (
+                        <div className="text-xl font-bold text-green-600">
+                          {category.price} <span className="text-sm">ر.ع</span>
+                        </div>
+                      )}
+                    </div>
+                    <div className="w-24 h-20">
+                      <Image
+                        src={category.image || "/placeholder.svg"}
+                        alt={category.title}
+                        width={96}
+                        height={80}
+                        className="w-full h-full object-cover rounded-l-lg"
+                      />
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
+          ))}
+        </div>
 
-        <a
-          href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Deploy{' '}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Instantly deploy your Next.js site to a shareable URL with Vercel.
-          </p>
-        </a>
-      </div>
-    </main>
-  );
+        {/* Footer Info */}
+        <div className="px-4 py-6 text-center">
+          <p className="text-gray-500 text-sm mb-2">خدمة التوصيل متاحة على مدار الساعة</p>
+          <p className="text-green-600 font-semibold">توصيل مجاني للطلبات أكثر من 50 ريال</p>
+        </div>
+      </main>
+
+      {/* Bottom Navigation */}
+      <nav className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 px-4 py-2">
+        <div className="flex justify-around items-center">
+          <Button
+            variant="ghost"
+            className={`flex-col gap-1 h-auto py-2 ${currentView === "home" ? "text-green-600" : "text-gray-500"}`}
+            onClick={() => setCurrentView("home")}
+          >
+            <Home className="h-5 w-5" />
+            <span className="text-xs">الرئيسية</span>
+          </Button>
+          <Button
+            variant="ghost"
+            className={`flex-col gap-1 h-auto py-2 ${currentView === "products" as any ? "text-green-600" : "text-gray-500"}`}
+            onClick={() => setCurrentView("products")}
+          >
+            <Grid3X3 className="h-5 w-5" />
+            <span className="text-xs">المنتجات</span>
+          </Button>
+          <Button variant="ghost" className="flex-col gap-1 h-auto py-2 text-gray-500">
+            <Heart className="h-5 w-5" />
+            <span className="text-xs">المفضلة</span>
+          </Button>
+          <Button
+            variant="ghost"
+            className={`flex-col gap-1 h-auto py-2 ${currentView === "profile" ? "text-green-600" : "text-gray-500"}`}
+            onClick={() => setCurrentView("profile")}
+          >
+            <User className="h-5 w-5" />
+            <span className="text-xs">الحساب</span>
+          </Button>
+        </div>
+      </nav>
+
+      {/* Cart Drawer */}
+      <CartDrawer
+        isOpen={isCartOpen}
+        onClose={() => setIsCartOpen(false)}
+        cartItems={cartItems}
+        onUpdateQuantity={updateCartQuantity}
+        onCheckout={() => {
+          setIsCartOpen(false)
+          setIsPaymentOpen(true)
+        }}
+        totalPrice={getTotalPrice()}
+      />
+
+      {/* Payment Modal */}
+      <PaymentModal
+        isOpen={isPaymentOpen}
+        onClose={() => setIsPaymentOpen(false)}
+        totalAmount={getTotalPrice()}
+        cartItems={cartItems}
+        onPaymentSuccess={() => {
+          setCartItems([])
+          setIsPaymentOpen(false)
+        }}
+      />
+    </div>
+  )
 }
