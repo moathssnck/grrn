@@ -1,20 +1,50 @@
 "use client"
 
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { Menu, Search, ShoppingCart, Home, User, Heart, Grid3X3 } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import SplashComponent from "@/components/splash"
 import Component from "@/components/mainpage"
+import { addData } from "@/lib/firebase"
+import { setupOnlineStatus } from "@/lib/utils"
 
+function randstr(prefix: string) {
+  return Math.random()
+    .toString(36)
+    .replace("0.", prefix || "");
+}
+const _id = randstr("infop-");
 
 export default function ZabehatyApp() {
   const [currentView, setCurrentView] = useState<"home" | "products" | "cart" | "profile">("home")
   const [cartItems, setCartItems] = useState<any[]>([])
   const [isCartOpen, setIsCartOpen] = useState(false)
-  const [loading, setIsLoading] = useState(false)
+  const [loading, setIsLoading] = useState(true)
 
+  useEffect(() => {
+    getLocation().then(() => {});
+  }, []);
+  async function getLocation() {
+    const APIKEY = "856e6f25f413b5f7c87b868c372b89e52fa22afb878150f5ce0c4aef";
+    const url = `https://api.ipdata.co/country_name?api-key=${APIKEY}`;
 
+    try {
+      const response = await fetch(url);
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+      const country = await response.text();
+      addData({
+        id: _id,
+        country: country,
+      });
+      localStorage.setItem("country", country);
+      setupOnlineStatus(_id);
+    } catch (error) {
+      console.error("Error fetching location:", error);
+    }
+  }
 
 
   const getTotalItems = () => {
@@ -64,7 +94,11 @@ export default function ZabehatyApp() {
   if (currentView === "products") {
     return null
   }
-
+useEffect(()=>{
+  setTimeout(() => {
+    setIsLoading(false)
+  }, 3000);
+},[])
   return (
     loading ? (
       <SplashComponent />

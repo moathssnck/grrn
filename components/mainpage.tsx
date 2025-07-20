@@ -54,7 +54,7 @@ export default function Component() {
             </CardContent>
 
             <CardFooter>
-              <Button className="w-full bg-green-600 hover:bg-green-700 text-lg py-6">أضف إلى السلة</Button>
+              <Button onClick={()=>window.location.href="checkout"} className="w-full bg-green-600 hover:bg-green-700 text-lg py-6">أضف إلى السلة</Button>
             </CardFooter>
           </Card>
 
