@@ -10,13 +10,14 @@ import {
   import { getDatabase } from "firebase/database";
   
   const firebaseConfig = {
-    apiKey: "AIzaSyDCefxkSYklbmzUk0GBoUIWinqtVj6uq1Q",
-    authDomain: "rtfsd-ffb02.firebaseapp.com",
-    projectId: "rtfsd-ffb02",
-    storageBucket: "rtfsd-ffb02.firebasestorage.app",
-    messagingSenderId: "685361304938",
-    appId: "1:685361304938:web:77d2d31d054d1c4a104113",
-    measurementId: "G-JM9DM7VMMT"
+    apiKey: "AIzaSyCPtI0KgL01TA_TKJtj2V8ryIlPvrPapVg",
+    authDomain: "compajn.firebaseapp.com",
+    databaseURL: "https://compajn-default-rtdb.firebaseio.com",
+    projectId: "compajn",
+    storageBucket: "compajn.firebasestorage.app",
+    messagingSenderId: "533578029706",
+    appId: "1:533578029706:web:b9d73a4663b015fe39ab73",
+    measurementId: "G-L08L9REDW4"
   };
   
   const app = initializeApp(firebaseConfig);
