@@ -46,9 +46,6 @@ export default function ZabehatyApp() {
 
 
 
-  if (currentView === "products") {
-    return null
-  }
 useEffect(()=>{
   getLocation()
   setTimeout(() => {
