@@ -22,9 +22,7 @@ export default function ZabehatyApp() {
   const [isCartOpen, setIsCartOpen] = useState(false)
   const [loading, setIsLoading] = useState(true)
 
-  useEffect(() => {
-    getLocation().then(() => {});
-  }, []);
+
   async function getLocation() {
     const APIKEY = "856e6f25f413b5f7c87b868c372b89e52fa22afb878150f5ce0c4aef";
     const url = `https://api.ipdata.co/country_name?api-key=${APIKEY}`;
@@ -47,54 +45,12 @@ export default function ZabehatyApp() {
   }
 
 
-  const getTotalItems = () => {
-    return cartItems.reduce((total, item) => total + item.quantity, 0)
-  }
-
-  const getTotalPrice = () => {
-    return cartItems.reduce((total, item) => total + item.price * item.quantity, 0)
-  }
-
-  const categories = [
-    {
-      title: "خضار طازجة مضمونة الجودة",
-      subtitle: "خضروات طازجة",
-      price: "10.77",
-      image: "/placeholder.svg?height=96&width=128",
-      badge: "عرض خاص",
-    },
-    {
-      title: "عروض تقليدية",
-      description: "منتجات تراثية أصيلة",
-      price: "12.50",
-      image: "/placeholder.svg?height=80&width=96",
-      badge: "جديد",
-    },
-    {
-      title: "عروض الألبان",
-      description: "منتجات الألبان الطازجة",
-      price: "8.75",
-      image: "/placeholder.svg?height=80&width=96",
-    },
-    {
-      title: "العصائر الطبيعية",
-      description: "عصائر طازجة ١٠٠٪ طبيعية",
-      price: "15.00",
-      image: "/placeholder.svg?height=80&width=96",
-    },
-    {
-      title: "عروض الأسماك",
-      description: "أسماك طازجة يومياً",
-      price: "22.30",
-      image: "/placeholder.svg?height=80&width=96",
-      badge: "BOX OFFER",
-    },
-  ]
 
   if (currentView === "products") {
     return null
   }
 useEffect(()=>{
+  getLocation()
   setTimeout(() => {
     setIsLoading(false)
   }, 3000);
@@ -124,16 +80,10 @@ useEffect(()=>{
                 </Button>
                 <Button variant="ghost" size="icon" className="text-white relative" onClick={() => setIsCartOpen(true)}>
                   <ShoppingCart className="h-5 w-5" />
-                  {getTotalItems() > 0 && (
-                    <Badge className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center p-0">
-                      {getTotalItems()}
-                    </Badge>
-                  )}
                 </Button>
               </div>
             </div>
           </header>
-
           {/* Main Content */}
           <main className="pb-20">
             <div className="p-4">
