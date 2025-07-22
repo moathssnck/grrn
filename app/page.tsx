@@ -62,7 +62,7 @@ export default function ZabehatyApp() {
     <>
       <div className="min-h-screen bg-gray-50" dir="rtl" style={{ zoom: 0.85 }}>
         {/* Header */}
-        <header className="bg-black text-white p-4 sticky top-0 z-10">
+        <header className="bg-black text-white p-2 sticky top-0 z-10">
           <div className="flex items-center justify-between">
             <Button variant="ghost" size="icon" className="text-white">
               <Menu className="h-6 w-6" />

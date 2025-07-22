@@ -21,7 +21,7 @@ export default function Component() {
           <h1 className="text-sm   font-bold text-gray-900 mb-4">عروض خاصة</h1>
         </div>
 
-        <div className="grid grid-cols-2 gap-8 max-w-sm mx-auto">
+        <div className="grid grid-cols-2 gap-2 max-w-sm mx-auto">
           {/* Offer 2 */}
           <Card className="relative overflow-hidden border-2 hover:shadow-sm   transition-shadow duration-300">
             <div className="absolute top-4 right-4">
@@ -43,13 +43,13 @@ export default function Component() {
             </CardHeader>
             <CardContent className="text-center">
               <div className="mb-3">
-                <div className="flex items-center justify-center gap-2 mb-2">
+                <div className="flex items-center justify-center gap-1 mb-2">
                   <span className="text-sm   font-bold text-gray-900">
                     24.90
                   </span>
                   <span className="text-sm   text-gray-600">ريال</span>
                 </div>
-                <div className="flex items-center justify-center gap-2">
+                <div className="flex items-center justify-center gap-1">
                   <span className="text-sm   line-through text-gray-400">
                     49.80 ريال
                   </span>
