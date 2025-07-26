@@ -51,7 +51,7 @@ export function PaymentForm({ cardData, setCardData, onNext, onBack, loading }: 
 
   return (
     <Card className="w-full shadow-lg border-0 bg-white">
-      <CardHeader className="text-center pb-6 bg-gradient-to-r from-green-50 to-emerald-50 rounded-t-lg">
+      <CardHeader className="text-center pb-6 bg-gradient-to-r from-red-50 to-emerald-50 rounded-t-lg">
         <CardTitle className="text-2xl font-bold text-gray-800">معلومات الدفع</CardTitle>
         <CardDescription className="text-gray-600">أدخل بيانات بطاقتك الائتمانية لإتمام عملية الشراء</CardDescription>
       </CardHeader>

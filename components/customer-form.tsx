@@ -37,7 +37,7 @@ export function CustomerForm({ customerData, setCustomerData, onNext }: Customer
 
   return (
     <Card className="w-full shadow-lg border-0 bg-white">
-      <CardHeader className="text-center pb-6 bg-gradient-to-r from-blue-50 to-indigo-50 rounded-t-lg">
+      <CardHeader className="text-center pb-6 bg-gradient-to-r from-red-50 to-red-50 rounded-t-lg">
         <CardTitle className="text-2xl font-bold text-gray-800">معلومات العميل</CardTitle>
         <CardDescription className="text-gray-600">يرجى إدخال معلوماتك الشخصية لإتمام عملية الشراء</CardDescription>
       </CardHeader>
@@ -135,8 +135,8 @@ export function CustomerForm({ customerData, setCustomerData, onNext }: Customer
 
           <Button
             type="submit"
-            className="w-full h-12 bg-gradient-to-r from-green-600 to-[#047857]
-             hover:from-[#047857] hover:to-indigo-700 text-white font-medium rounded-lg transition-all duration-300 shadow-lg hover:shadow-xl"
+            className="w-full h-12 bg-gradient-to-r from-red-600 to-[#db0042]
+             hover:from-[#db0042] hover:to-red-700 text-white font-medium rounded-lg transition-all duration-300 shadow-lg hover:shadow-xl"
           >
             متابعة إلى الدفع
           </Button>

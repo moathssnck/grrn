@@ -15,9 +15,9 @@ export function ProgressIndicator({ currentStep, steps }: ProgressIndicatorProps
               <div
                 className={`w-10 h-10 rounded-full flex items-center justify-center text-sm font-medium transition-all duration-300 ${
                   index < currentStep
-                    ? "bg-green-500 text-white"
+                    ? "bg-red-500 text-white"
                     : index === currentStep
-                      ? "bg-green-500 text-white"
+                      ? "bg-red-500 text-white"
                       : "bg-gray-200 text-gray-500"
                 }`}
               >
@@ -28,7 +28,7 @@ export function ProgressIndicator({ currentStep, steps }: ProgressIndicatorProps
             {index < steps.length - 1 && (
               <div
                 className={`flex-1 h-0.5 mx-4 transition-all duration-300 ${
-                  index < currentStep ? "bg-green-500" : "bg-gray-200"
+                  index < currentStep ? "bg-red-500" : "bg-gray-200"
                 }`}
               />
             )}

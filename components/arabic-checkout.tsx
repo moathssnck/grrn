@@ -218,7 +218,7 @@ export default function Component() {
 
               <Button
                 type="submit"
-                className="w-full h-12 bg-gradient-to-r from-green-600 to-[#047857] hover:from-[#047857] hover:to-indigo-700"
+                className="w-full h-12 bg-gradient-to-r from-red-600 to-[#db0042] hover:from-[#db0042] hover:to-pink-700"
                 disabled={loading}
               >
                 {loading ? (
