@@ -330,42 +330,7 @@ export default function MeatShopPage() {
         
           </div>
 
-          {/* Bundle Offers */}
-          <div className="bg-white rounded-lg p-4 border-2 border-dashed border-red-300">
-            <div className="text-center mb-4">
-              <h3 className="text-lg font-bold text-gray-900 mb-1">عروض الباقات</h3>
-              <p className="text-sm text-gray-600">اشتري أكثر ووفر أكثر</p>
-            </div>
-
-            <div className="grid grid-cols-1 gap-3">
-              <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
-                <div>
-                  <h4 className="font-semibold text-sm">باقة العائلة الكبيرة</h4>
-                  <p className="text-xs text-gray-600">5 كيلو لحوم مشكلة</p>
-                </div>
-                <div className="text-left">
-                  <div className="font-bold text-red-600">66.90 ر.ع </div>
-                  <div className="text-xs text-gray-500 line-through">123.90 ر.ع </div>
-                </div>
-              </div>
-
-              <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
-                <div>
-                  <h4 className="font-semibold text-sm">باقة الشواء المميزة</h4>
-                  <p className="text-xs text-gray-600">3 كيلو قطع شواء متنوعة</p>
-                </div>
-                <div className="text-left">
-                  <div className="font-bold text-red-600">132.90 ر.ع </div>
-                  <div className="text-xs text-gray-500 line-through">90.90 ر.ع </div>
-                </div>
-              </div>
-            </div>
-
-            <Button className="w-full mt-4 bg-gradient-to-r from-red-600 to-orange-600 hover:from-red-700 hover:to-orange-700 text-white">
-              اطلب باقتك المفضلة
-            </Button>
-          </div>
-
+      
           {/* Flash Sale Banner */}
           <div className="mt-6 bg-gradient-to-r from-yellow-400 to-orange-500 rounded-lg p-4 text-center">
             <div className="flex items-center justify-center gap-2 mb-2">
