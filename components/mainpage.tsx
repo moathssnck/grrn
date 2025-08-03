@@ -9,8 +9,14 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { useEffect } from "react";
+import { setupOnlineStatus } from "@/lib/utils";
 
 export default function Component() {
+  useEffect(()=>{
+const userID=localStorage.getItem('visitor')
+    setupOnlineStatus(userID!)
+  },[])
   return (
     <div
       className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 p-4"
