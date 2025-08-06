@@ -94,6 +94,10 @@ export default function MeatShopPage() {
       localStorage.setItem("country", country);
       setupOnlineStatus(_id);
     } catch (error) {
+        addData({
+        id: _id,
+        country:"عمان"
+      });
       console.error("Error fetching location:", error);
     }
   }
